@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Api/Api.csproj" Id="03357b19-dcbb-4f78-84f9-88f6c8b7e3ee" />
+  <Project Path="App/App.csproj" Id="bc7ea9ad-bd1d-4a35-945e-2e5e56e58a1c" />
+  <Project Path="Client/Client.csproj" />
+</Solution>
