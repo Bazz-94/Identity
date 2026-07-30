@@ -18,6 +18,7 @@ Identity needs a dedicated Entity Framework Core data access project, plus a loc
 
 ## Notes
 - Local db choice (Docker vs LocalDB) to be decided during implementation planning.
+- Separate migrations projects and models project.
 
 ## Open Questions
 - Docker container or SQL Server LocalDB for local dev?
