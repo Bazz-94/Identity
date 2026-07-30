@@ -1,7 +1,7 @@
 # Story: Client App Registry
 
 - Status: not started
-- Dependency: none
+- Dependency: db-00-data-access-and-database-environments
 
 ## Description
 Identity needs to know which client apps are allowed to use it for SSO. Each client app is registered with a client id, client secret, and one or more allowed redirect URIs. This registry is the foundation the login and token flows check against.

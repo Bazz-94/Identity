@@ -1,7 +1,7 @@
 # Story: Client Registry Management UI
 
 - Status: not started
-- Dependency: sa-01-client-registry
+- Dependency: sa-00-client-registry
 
 ## Description
 Admins manage client app registrations through a dedicated page — registering new clients and viewing/editing/deleting existing ones.
