@@ -1,7 +1,7 @@
-﻿namespace Migrations
+﻿namespace Infrastructure.Database
 {
+  using Domain.Models;
   using Microsoft.EntityFrameworkCore;
-  using Models;
 
   public class ModelDbContext : DbContext
   {

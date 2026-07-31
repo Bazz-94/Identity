@@ -1,14 +1,10 @@
-namespace App
+namespace Api
 {
-  using System;
-  using Api;
+  using App;
   using Client;
   using Microsoft.AspNetCore.Builder;
-  using Microsoft.EntityFrameworkCore;
-  using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
-  using Migrations;
 
   public class Program
   {
@@ -18,21 +14,9 @@ namespace App
 
       // Add services from the libraries to the container.
       builder.Services.AddApi();
+      builder.Services.AddApp(builder.Configuration, builder.Environment);
       builder.Services.AddClient();
       builder.Services.AddOpenApi();
-
-      string? connection = String.Empty;
-      if (builder.Environment.IsDevelopment())
-      {
-        builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-        connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
-      }
-      else
-      {
-        connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
-      }
-
-      builder.Services.AddDbContext<ModelDbContext>(options => options.UseSqlServer(connection));
 
       WebApplication app = builder.Build();
 

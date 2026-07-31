@@ -5,7 +5,7 @@ namespace Client
   using Microsoft.Extensions.DependencyInjection;
 
   /// <summary>
-  /// Entry points used by the App host to compose the Client library into the request pipeline.
+  /// Entry points used by the Api host to compose the Client library into the request pipeline.
   /// </summary>
   public static class ClientExtensions
   {

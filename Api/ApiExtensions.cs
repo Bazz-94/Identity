@@ -6,7 +6,7 @@ namespace Api
   using Microsoft.Extensions.Hosting;
 
   /// <summary>
-  /// Entry points used by the App host to compose the Api library into the request pipeline.
+  /// Entry points used by Program.cs to compose the Api library's own services into the request pipeline.
   /// </summary>
   public static class ApiExtensions
   {

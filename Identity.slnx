@@ -1,7 +1,8 @@
 <Solution>
   <Project Path="Api/Api.csproj" Id="03357b19-dcbb-4f78-84f9-88f6c8b7e3ee" />
+  <Project Path="App.Tests/App.Tests.csproj" Id="9b052421-1e38-4794-92cb-4a23d20d6207" />
   <Project Path="App/App.csproj" Id="bc7ea9ad-bd1d-4a35-945e-2e5e56e58a1c" />
   <Project Path="Client/Client.csproj" />
-  <Project Path="Migrations/Migrations.csproj" Id="f5552b33-b3a5-4173-bfa4-be718814cb93" />
-  <Project Path="Models/Models.csproj" Id="7e18c183-58f1-4408-9558-ec8bdec812f7" />
+  <Project Path="Domain/Domain.csproj" Id="7e18c183-58f1-4408-9558-ec8bdec812f7" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="f5552b33-b3a5-4173-bfa4-be718814cb93" />
 </Solution>
