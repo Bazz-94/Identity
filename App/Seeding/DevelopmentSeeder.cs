@@ -2,6 +2,7 @@ namespace App.Seeding
 {
   using System.Threading.Tasks;
   using App.Helpers;
+  using Domain.Enums;
   using Domain.Models;
   using Infrastructure.Database;
   using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace App.Seeding
         return;
       }
 
-      User systemUser = new User { UserName = "system" };
+      User systemUser = new User("system", "admin@localhost", UserRole.Admin);
       dbContext.Users.Add(systemUser);
 
       ClientApp clientApp = new ClientApp(

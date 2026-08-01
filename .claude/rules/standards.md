@@ -12,6 +12,7 @@
       ├── Api               // contains the API controllers and related code, as well as the startup project.
       └── Client            // contains the client-side code.
   ```
+- Client (UI) pages never call App-layer services directly. UI talks to Api controllers over HTTP; controllers call App-layer services. Keeps frontend/backend separation of concerns explicit.
 
 ## C# Standards
 

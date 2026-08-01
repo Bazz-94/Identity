@@ -31,6 +31,7 @@ namespace App
       services.AddDbContext<ModelDbContext>(options => options.UseSqlServer(connection));
       services.AddSingleton<ClientSecretHasher>();
       services.AddScoped<ClientRegistryService>();
+      services.AddScoped<AuthService>();
 
       if (environment.IsDevelopment())
       {

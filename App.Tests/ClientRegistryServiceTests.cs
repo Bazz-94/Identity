@@ -4,6 +4,7 @@ namespace App.Tests
   using System.Threading.Tasks;
   using App.Enums;
   using App.Services;
+  using Domain.Enums;
   using Domain.Models;
   using Infrastructure.Database;
   using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,7 @@ namespace App.Tests
     public async Task ValidateClientAsync_RedirectUriHostDoesNotMatchDomain_ReturnsRedirectUriNotAllowed()
     {
       using ModelDbContext dbContext = CreateDbContext();
-      User user = new User();
+      User user = new User("system", "system@localhost", UserRole.Admin);
       ClientApp clientApp = new ClientApp("My App", "hash", "myapp.com", user.UserId);
       dbContext.Users.Add(user);
       dbContext.ClientApps.Add(clientApp);
@@ -51,7 +52,7 @@ namespace App.Tests
     public async Task ValidateClientAsync_RedirectUriHostMatchesDomain_ReturnsValid()
     {
       using ModelDbContext dbContext = CreateDbContext();
-      User user = new User();
+      User user = new User("system", "system@localhost", UserRole.Admin);
       ClientApp clientApp = new ClientApp("My App", "hash", "myapp.com", user.UserId);
       dbContext.Users.Add(user);
       dbContext.ClientApps.Add(clientApp);

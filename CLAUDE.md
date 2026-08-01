@@ -60,6 +60,7 @@ dotnet ef database update <PreviousMigrationName> -p Infrastructure -s Api
 - Prefer `foreach` over `for`.
 - Provide concise XML doc comments on all classes, methods, and properties.
 - Unit test all Domain logic; Application (App) and Infrastructure code may be untested or covered by integration tests only.
+- Client (UI) pages never call App-layer services directly. UI talks to Api controllers over HTTP; controllers call App-layer services. Keeps frontend/backend separation of concerns explicit.
 
 ## Planning artifacts
 
