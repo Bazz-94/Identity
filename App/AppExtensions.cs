@@ -17,18 +17,22 @@ namespace App
   {
     public static IServiceCollection AddApp(this IServiceCollection services, ConfigurationManager configuration, IHostEnvironment environment)
     {
-      string? connection;
-      if (environment.IsDevelopment())
+      if (!environment.IsEnvironment("Testing"))
       {
-        configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-        connection = configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
-      }
-      else
-      {
-        connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+        string? connection;
+        if (environment.IsDevelopment())
+        {
+          configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
+          connection = configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+        }
+        else
+        {
+          connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+        }
+
+        services.AddDbContext<ModelDbContext>(options => options.UseSqlServer(connection));
       }
 
-      services.AddDbContext<ModelDbContext>(options => options.UseSqlServer(connection));
       services.AddSingleton<ClientSecretHasher>();
       services.AddScoped<ClientRegistryService>();
       services.AddScoped<AuthService>();

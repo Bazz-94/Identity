@@ -30,6 +30,9 @@ namespace App.Seeding
       User systemUser = new User("system", "admin@localhost", UserRole.Admin);
       dbContext.Users.Add(systemUser);
 
+      User operatorUser = new User("operator", "operator@localhost", UserRole.Operator);
+      dbContext.Users.Add(operatorUser);
+
       ClientApp clientApp = new ClientApp(
         "Client",
         this.hasher.Hash("secret"),

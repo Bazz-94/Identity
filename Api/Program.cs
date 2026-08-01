@@ -46,6 +46,7 @@ namespace Api
 
       app.UseRouting();
 
+      app.UseAuthentication();
       app.UseAuthorization();
 
       // Map the endpoints exposed by each library.

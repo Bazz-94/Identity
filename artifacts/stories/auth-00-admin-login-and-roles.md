@@ -1,6 +1,6 @@
 # Story: Admin/Operator Login and Role-Gated Access
 
-- Status: not started
+- Status: implemented
 - Dependency: sa-00-client-registry
 
 ## Description
@@ -14,7 +14,7 @@ Real Google SSO is deferred to `sa-02`. This story stubs the login: a dev login 
 - On match, a cookie-based session is established carrying the user's id and Role as claims.
 - `User` has `Email` (string) and `Role` (enum: Admin, Operator, User).
 - Pages/endpoints can be restricted to a required role via an authorization policy (`[Authorize(Roles = ...)]`).
-- An authenticated user without the required role hitting a restricted page is redirected to a custom Access Denied page.
+- An authenticated user without the required role hitting a restricted page/endpoint is denied access: browser page navigation redirects to a custom Access Denied page; API/JSON requests get a 403 response.
 - A logout endpoint clears the session.
 
 ## Notes

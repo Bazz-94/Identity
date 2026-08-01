@@ -1,5 +1,6 @@
 namespace Api
 {
+  using Microsoft.AspNetCore.Authentication.Cookies;
   using Microsoft.AspNetCore.Builder;
   using Microsoft.AspNetCore.Routing;
   using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,14 @@ namespace Api
       services.AddControllers();
       // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
       services.AddOpenApi();
+
+      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+          options.LoginPath = "/Login";
+          options.AccessDeniedPath = "/AccessDenied";
+        });
+      services.AddAuthorization();
 
       return services;
     }
