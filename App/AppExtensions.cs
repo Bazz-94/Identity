@@ -1,6 +1,9 @@
 namespace App
 {
   using System;
+  using App.Helpers;
+  using App.Seeding;
+  using App.Services;
   using Infrastructure.Database;
   using Microsoft.EntityFrameworkCore;
   using Microsoft.Extensions.Configuration;
@@ -26,6 +29,13 @@ namespace App
       }
 
       services.AddDbContext<ModelDbContext>(options => options.UseSqlServer(connection));
+      services.AddSingleton<ClientSecretHasher>();
+      services.AddScoped<ClientRegistryService>();
+
+      if (environment.IsDevelopment())
+      {
+        services.AddScoped<IDataSeeder, DevelopmentSeeder>();
+      }
 
       return services;
     }

@@ -1,6 +1,8 @@
 namespace Api
 {
+  using System.Threading.Tasks;
   using App;
+  using App.Seeding;
   using Client;
   using Microsoft.AspNetCore.Builder;
   using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +10,7 @@ namespace Api
 
   public class Program
   {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
       WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,13 @@ namespace Api
       builder.Services.AddOpenApi();
 
       WebApplication app = builder.Build();
+
+      if (app.Environment.IsDevelopment())
+      {
+        await app.MigrateDatabaseAsync();
+      }
+
+      await app.SeedDataAsync();
 
       // Configure the HTTP request pipeline.
       if (!app.Environment.IsDevelopment())
@@ -43,7 +52,7 @@ namespace Api
       app.MapApi();
       app.MapClient();
 
-      app.Run();
+      await app.RunAsync();
     }
   }
 }

@@ -19,7 +19,7 @@
 - Use `this.` for instance members; always use block bodies for methods.
 - Stateful types expose private setters plus explicit state-transition methods (e.g. a `Player` with a private-set `Health` mutated only via `TakeDamage`/`Heal`, never by setting the field directly).
 - Avoid single-use local variables — inline the expression instead.
-- Define constants or Enums for meaningful values instead of hardcoding them; never hardcode string values.
+- Define constants or Enums for meaningful values instead of hardcoding them; never hardcode string values. Exception: seed data values don't need constants unless the same value is duplicated elsewhere.
 - Avoid redundant words in names (`GameLoop`, not `RiverRunGameLoop`, when context is already clear).
 - Prefer `foreach` over `for`.
 - Provide concise XML doc comments on all classes, methods, and properties.
