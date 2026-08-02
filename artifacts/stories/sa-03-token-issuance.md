@@ -1,7 +1,7 @@
 # Story: Token Issuance
 
 - Status: not started
-- Dependency: sa-02-google-sso-login
+- Dependency: sa-02-microsoft-sso-login
 
 ## Description
 A client app exchanges the authorization code it received from the login flow for a JWT ID token and access token. This is the standard OIDC authorization code exchange step, and is the point at which the client app receives a usable token for the authenticated user.

@@ -1,0 +1,140 @@
+{
+  "info": {
+    "name": "Identity",
+    "description": "Requests exercising Identity's dev login and client app registry endpoints. Requests are ordered to run top-to-bottom as a full collection run: log in as Admin first, exercise the client app CRUD endpoints, then the Operator/Logout requests at the end.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5285"
+    },
+    {
+      "key": "clientId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Login as Admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@localhost\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Client Apps",
+      "item": [
+        {
+          "name": "Create Client App",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('clientId', body.clientId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Test App\",\n  \"redirectDomain\": \"postman-test.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/client-apps",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "client-apps"]
+            }
+          }
+        },
+        {
+          "name": "List Client Apps",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/client-apps",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "client-apps"]
+            }
+          }
+        },
+        {
+          "name": "Update Client App",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Test App (renamed)\",\n  \"redirectDomain\": \"postman-test-renamed.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/client-apps/{{clientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "client-apps", "{{clientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Client App",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/client-apps/{{clientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "client-apps", "{{clientId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login as Operator",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"operator@localhost\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/logout",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "logout"]
+        }
+      }
+    }
+  ]
+}

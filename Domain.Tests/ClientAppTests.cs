@@ -21,5 +21,16 @@ namespace Domain.Tests
       Assert.Equal(createdBy, clientApp.CreatedBy);
       Assert.InRange(clientApp.CreatedOn, before, DateTimeOffset.UtcNow);
     }
+
+    [Fact]
+    public void UpdateDetails_SetsNameAndRedirectDomain()
+    {
+      ClientApp clientApp = new ClientApp("My App", "hash", "myapp.com", Guid.NewGuid());
+
+      clientApp.UpdateDetails("Renamed App", "newdomain.com");
+
+      Assert.Equal("Renamed App", clientApp.Name);
+      Assert.Equal("newdomain.com", clientApp.RedirectDomain);
+    }
   }
 }

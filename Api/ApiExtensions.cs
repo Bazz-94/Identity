@@ -20,7 +20,7 @@ namespace Api
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
         {
-          options.LoginPath = "/Login";
+          options.LoginPath = "/";
           options.AccessDeniedPath = "/AccessDenied";
         });
       services.AddAuthorization();

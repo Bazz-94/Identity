@@ -62,5 +62,16 @@ namespace Domain.Models
     /// Timestamp of registration.
     /// </summary>
     public DateTime CreatedOn { get; private set; }
+
+    /// <summary>
+    /// Updates the client app's display name and allowed redirect domain.
+    /// </summary>
+    /// <param name="name">New display name.</param>
+    /// <param name="redirectDomain">New domain redirect URIs must belong to.</param>
+    public void UpdateDetails(string name, string redirectDomain)
+    {
+      this.Name = name;
+      this.RedirectDomain = redirectDomain;
+    }
   }
 }

@@ -49,18 +49,7 @@ dotnet ef database update <PreviousMigrationName> -p Infrastructure -s Api
 
 ## C# coding standards
 
-(from `.claude/rules/standards.md` — these apply to all new/edited code)
-
-- No `var` — always use explicit types.
-- Use `this.` for instance members; always use block bodies for methods.
-- Stateful types expose private setters plus explicit state-transition methods (e.g. a `Player` with a private-set `Health` mutated only via `TakeDamage`/`Heal`, never by setting the field directly).
-- Avoid single-use local variables — inline the expression instead.
-- Define constants or enums for meaningful values instead of hardcoding them; never hardcode string values. Exception: seed data values don't need constants unless the same value is duplicated elsewhere.
-- Avoid redundant words in names (`GameLoop`, not `RiverRunGameLoop`, when context is already clear).
-- Prefer `foreach` over `for`.
-- Provide concise XML doc comments on all classes, methods, and properties.
-- Unit test all Domain logic; Application (App) and Infrastructure code may be untested or covered by integration tests only.
-- Client (UI) pages never call App-layer services directly. UI talks to Api controllers over HTTP; controllers call App-layer services. Keeps frontend/backend separation of concerns explicit.
+See `.claude/rules/standards.md` for the full C# coding standards — they apply to all new/edited code.
 
 ## Planning artifacts
 

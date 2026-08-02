@@ -1,0 +1,179 @@
+@page
+@model ClientAppsModel
+@{
+    ViewData["Title"] = "Client Apps";
+    bool isAdmin = User.IsInRole("Admin");
+}
+
+<div class="text-center">
+    <h1 class="display-4">Client Apps</h1>
+    <p class="text-muted">Registered client apps allowed to use Identity for SSO.</p>
+</div>
+
+@if (isAdmin)
+{
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <form id="create-form" class="row g-2 align-items-end">
+                <div class="col-sm-5">
+                    <label for="create-name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="create-name" name="name" required />
+                </div>
+                <div class="col-sm-5">
+                    <label for="create-redirect-domain" class="form-label">Redirect domain</label>
+                    <input type="text" class="form-control" id="create-redirect-domain" name="redirectDomain" required />
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </div>
+            </form>
+            <div id="create-secret" class="alert alert-success mt-3 d-none" role="alert"></div>
+            <div id="create-error" class="alert alert-danger mt-3 d-none" role="alert">Could not register the client app.</div>
+        </div>
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Redirect domain</th>
+            <th>Created by</th>
+            <th>Created on</th>
+            @if (isAdmin)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody id="client-apps-body"></tbody>
+</table>
+
+@section Scripts {
+    <script>
+        const isAdmin = @Html.Raw(isAdmin ? "true" : "false");
+        const tableBody = document.getElementById('client-apps-body');
+
+        function textCell(className, text) {
+            const cell = document.createElement('td');
+            if (className) {
+                cell.className = className;
+            }
+            cell.textContent = text;
+            return cell;
+        }
+
+        function renderRow(clientApp) {
+            const row = document.createElement('tr');
+            row.dataset.clientId = clientApp.clientId;
+            row.appendChild(textCell('name-cell', clientApp.name));
+            row.appendChild(textCell('redirect-domain-cell', clientApp.redirectDomain));
+            row.appendChild(textCell(null, clientApp.createdByUserName));
+            row.appendChild(textCell(null, new Date(clientApp.createdOn).toLocaleString()));
+
+            if (isAdmin) {
+                const actionsCell = document.createElement('td');
+                const editButton = document.createElement('button');
+                editButton.type = 'button';
+                editButton.className = 'btn btn-sm mx-1 btn-outline-secondary edit-btn';
+                editButton.textContent = 'Edit';
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'btn btn-sm mx-1 btn-outline-danger delete-btn';
+                deleteButton.textContent = 'Delete';
+                actionsCell.appendChild(editButton);
+                actionsCell.appendChild(deleteButton);
+                row.appendChild(actionsCell);
+            }
+
+            return row;
+        }
+
+        async function loadClientApps() {
+            const response = await fetch('/api/client-apps');
+            const clientApps = await response.json();
+            tableBody.innerHTML = '';
+            clientApps.forEach(clientApp => tableBody.appendChild(renderRow(clientApp)));
+        }
+
+        if (isAdmin) {
+            document.getElementById('create-form').addEventListener('submit', async function (event) {
+                event.preventDefault();
+                const name = document.getElementById('create-name').value;
+                const redirectDomain = document.getElementById('create-redirect-domain').value;
+                const secretBox = document.getElementById('create-secret');
+                const errorBox = document.getElementById('create-error');
+                secretBox.classList.add('d-none');
+                errorBox.classList.add('d-none');
+
+                const response = await fetch('/api/client-apps', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, redirectDomain: redirectDomain }),
+                });
+
+                if (response.ok) {
+                    const created = await response.json();
+                    secretBox.textContent = `Client secret (shown once): ${created.clientSecret}`;
+                    secretBox.classList.remove('d-none');
+                    event.target.reset();
+                    await loadClientApps();
+                } else {
+                    errorBox.classList.remove('d-none');
+                }
+            });
+
+            tableBody.addEventListener('click', async function (event) {
+                const row = event.target.closest('tr');
+                if (!row) {
+                    return;
+                }
+                const clientId = row.dataset.clientId;
+
+                if (event.target.classList.contains('delete-btn')) {
+                    if (!confirm('Delete this client app? This cannot be undone.')) {
+                        return;
+                    }
+                    await fetch(`/api/client-apps/${clientId}`, { method: 'DELETE' });
+                    await loadClientApps();
+                    return;
+                }
+
+                if (event.target.classList.contains('edit-btn')) {
+                    const nameCell = row.querySelector('.name-cell');
+                    const redirectDomainCell = row.querySelector('.redirect-domain-cell');
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.className = 'form-control form-control-sm edit-name';
+                    nameInput.value = nameCell.textContent;
+                    const redirectDomainInput = document.createElement('input');
+                    redirectDomainInput.type = 'text';
+                    redirectDomainInput.className = 'form-control form-control-sm edit-redirect-domain';
+                    redirectDomainInput.value = redirectDomainCell.textContent;
+                    nameCell.replaceChildren(nameInput);
+                    redirectDomainCell.replaceChildren(redirectDomainInput);
+
+                    const saveButton = document.createElement('button');
+                    saveButton.type = 'button';
+                    saveButton.className = 'btn btn-sm btn-primary save-btn';
+                    saveButton.textContent = 'Save';
+                    event.target.replaceWith(saveButton);
+                    return;
+                }
+
+                if (event.target.classList.contains('save-btn')) {
+                    const name = row.querySelector('.edit-name').value;
+                    const redirectDomain = row.querySelector('.edit-redirect-domain').value;
+                    await fetch(`/api/client-apps/${clientId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: name, redirectDomain: redirectDomain }),
+                    });
+                    await loadClientApps();
+                }
+            });
+        }
+
+        loadClientApps();
+    </script>
+}

@@ -1,4 +1,4 @@
-@page
+@page "/"
 @model LoginModel
 @{
     ViewData["Title"] = "Log in";
@@ -39,7 +39,7 @@
             });
 
             if (response.ok) {
-                window.location.href = '/';
+                window.location.href = '/Home';
             } else {
                 errorBox.classList.remove('d-none');
             }

@@ -2,16 +2,6 @@
 
 ## Project Standards
 - The project adheres to CLEAN architecture principles, with a clear separation of concerns between the Domain, Application, Infrastructure, and API layers.
-- The project is structured as follows:
-  ```
-  Identity.sln
-  └── src
-      ├── Domain            // contains the core domain logic, entities, and value objects.
-      ├── App               // contains application services, commands, and queries.
-      ├── Infrastructure    // contains infrastructure concerns like data access, external service integrations.
-      ├── Api               // contains the API controllers and related code, as well as the startup project.
-      └── Client            // contains the client-side code.
-  ```
 - Client (UI) pages never call App-layer services directly. UI talks to Api controllers over HTTP; controllers call App-layer services. Keeps frontend/backend separation of concerns explicit.
 
 ## C# Standards
